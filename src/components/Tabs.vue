@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-    <div class="left-nav">
+    <div ref="lefNavRef" class="left-nav">
       <div
+        ref="navEls"
         @click.stop="handleClick(index)"
         :class="{ 'nav-item': true, active: activeIndex === index }"
         v-for="(value, key, index) in loftData"
@@ -31,6 +32,7 @@ export default {
   data() {
     return {
       contentScrollTop: [],
+      navScrollTop: [],
       activeIndex: 0,
       loftData: {
         key1: {
@@ -60,27 +62,107 @@ export default {
             },
           ],
         },
+        key4: {
+          title: "key4",
+          list: [
+            {
+              id: nanoid(),
+              title: "你好4",
+            },
+          ],
+        },
+        key5: {
+          title: "key5",
+          list: [
+            {
+              id: nanoid(),
+              title: "你好5",
+            },
+          ],
+        },
+        key6: {
+          title: "key6",
+          list: [
+            {
+              id: nanoid(),
+              title: "你好6",
+            },
+          ],
+        },
+         key7: {
+          title: "key7",
+          list: [
+            {
+              id: nanoid(),
+              title: "你好7",
+            },
+          ],
+        },
+         key8: {
+          title: "key8",
+          list: [
+            {
+              id: nanoid(),
+              title: "你好8",
+            },
+          ],
+        },
+        key9: {
+          title: "key9",
+          list: [
+            {
+              id: nanoid(),
+              title: "你好9",
+            },
+          ],
+        },
       },
     };
   },
   mounted() {
     let contentEls = this.$refs.contentEls;
+    let navEls = this.$refs.navEls;
     for (let i = 0; i < contentEls.length; i++) {
       if (i === 0) {
         this.contentScrollTop.push(0);
+        this.navScrollTop.push(navEls[i].clientHeight);
       } else {
         this.contentScrollTop.push(
           this.contentScrollTop[i - 1] + contentEls[i].clientHeight
         );
+        this.navScrollTop.push(
+          this.navScrollTop[i - 1] + navEls[i].clientHeight
+        );
       }
     }
+  },
+  watch: {
+    activeIndex: {
+      handler(val, oldVal) {
+        if (val > oldVal) {
+          if (
+            this.navScrollTop[val] + this.$refs.navEls[val].clientHeight >=
+            this.$refs.lefNavRef.clientHeight
+          ) {
+            this.$refs.lefNavRef.scrollTo({
+              top: this.navScrollTop[val],
+              behavior: "smooth",
+            });
+          }
+        } else {
+          this.$refs.lefNavRef.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }
+      },
+    },
   },
   methods: {
     handleClick(index) {
       let scrollTop = this.contentScrollTop[index];
       this.$refs.navContainerRef.scrollTo({
         top: scrollTop,
-        behavior: "smooth",
       });
     },
     handleScroll: throttle(function (e) {
@@ -103,11 +185,12 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 100%;
-  height: 400px;
+  height: 200px;
   display: flex;
   .left-nav {
     width: 80px;
     height: 100%;
+    overflow: auto;
     background: green;
     .nav-item {
       height: 40px;
