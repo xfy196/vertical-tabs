@@ -89,7 +89,7 @@ export default {
             },
           ],
         },
-         key7: {
+        key7: {
           title: "key7",
           list: [
             {
@@ -98,7 +98,7 @@ export default {
             },
           ],
         },
-         key8: {
+        key8: {
           title: "key8",
           list: [
             {
@@ -119,19 +119,35 @@ export default {
       },
     };
   },
+  created() {
+    for (let i = 0; i < 40; i++) {
+      this.loftData[`key${i + 1}`] = {
+        title: `key${i + 1}`,
+      };
+      let list = [];
+      for (let j = 0; j < 4; j++) {
+        list.push({
+          id: nanoid(),
+          title: `你好-key${i + 1}-${j + 1}`,
+        });
+      }
+      this.loftData[`key${i + 1}`].list = list;
+    }
+    console.log(this.loftData);
+  },
   mounted() {
     let contentEls = this.$refs.contentEls;
     let navEls = this.$refs.navEls;
     for (let i = 0; i < contentEls.length; i++) {
       if (i === 0) {
         this.contentScrollTop.push(0);
-        this.navScrollTop.push(navEls[i].clientHeight);
+        this.navScrollTop.push(0);
       } else {
         this.contentScrollTop.push(
-          this.contentScrollTop[i - 1] + contentEls[i].clientHeight
+          this.contentScrollTop[i - 1] + contentEls[i].offsetHeight
         );
         this.navScrollTop.push(
-          this.navScrollTop[i - 1] + navEls[i].clientHeight
+          this.navScrollTop[i - 1] + navEls[i].offsetHeight
         );
       }
     }
@@ -140,18 +156,13 @@ export default {
     activeIndex: {
       handler(val, oldVal) {
         if (val > oldVal) {
-          if (
-            this.navScrollTop[val] + this.$refs.navEls[val].clientHeight >=
-            this.$refs.lefNavRef.clientHeight
-          ) {
-            this.$refs.lefNavRef.scrollTo({
-              top: this.navScrollTop[val],
-              behavior: "smooth",
-            });
-          }
-        } else {
           this.$refs.lefNavRef.scrollTo({
-            top: 0,
+            top: this.navScrollTop[val],
+            behavior: "smooth",
+          });
+        } else if (val < oldVal) {
+          this.$refs.lefNavRef.scrollTo({
+            top: this.$refs.lefNavRef.scrollTop - (this.navScrollTop[oldVal] - this.navScrollTop[val]),
             behavior: "smooth",
           });
         }
@@ -196,6 +207,7 @@ export default {
       height: 40px;
       line-height: 40px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
       background: #fff;
       &.active {
         color: red;
