@@ -22,8 +22,8 @@ jobs:
       # 生成静态文件
       - name: Install And Build
         run: |
-          npm install
-          npm run build
+          yarn
+          yarn build
 
       # 部署到 GitHub Pages
       - name: Deploy
