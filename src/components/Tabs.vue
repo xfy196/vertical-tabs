@@ -35,87 +35,7 @@ export default {
       navScrollTop: [],
       activeIndex: 0,
       loftData: {
-        key1: {
-          title: "key1",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好1",
-            },
-          ],
-        },
-        key2: {
-          title: "key2",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好2",
-            },
-          ],
-        },
-        key3: {
-          title: "key3",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好3",
-            },
-          ],
-        },
-        key4: {
-          title: "key4",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好4",
-            },
-          ],
-        },
-        key5: {
-          title: "key5",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好5",
-            },
-          ],
-        },
-        key6: {
-          title: "key6",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好6",
-            },
-          ],
-        },
-        key7: {
-          title: "key7",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好7",
-            },
-          ],
-        },
-        key8: {
-          title: "key8",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好8",
-            },
-          ],
-        },
-        key9: {
-          title: "key9",
-          list: [
-            {
-              id: nanoid(),
-              title: "你好9",
-            },
-          ],
-        },
+        
       },
     };
   },
@@ -157,12 +77,12 @@ export default {
       handler(val, oldVal) {
         if (val > oldVal) {
           this.$refs.lefNavRef.scrollTo({
-            top: this.navScrollTop[val],
+            top: this.navScrollTop[val] - this.$refs.navContainerRef.offsetHeight / 2,
             behavior: "smooth",
           });
         } else if (val < oldVal) {
           this.$refs.lefNavRef.scrollTo({
-            top: this.$refs.lefNavRef.scrollTop - (this.navScrollTop[oldVal] - this.navScrollTop[val]),
+            top: this.$refs.lefNavRef.scrollTop - (this.navScrollTop[oldVal] - this.navScrollTop[val] - this.$refs.navContainerRef.offsetHeight / 2),
             behavior: "smooth",
           });
         }
