@@ -77,12 +77,12 @@ export default {
       handler(val, oldVal) {
         if (val > oldVal) {
           this.$refs.lefNavRef.scrollTo({
-            top: this.navScrollTop[val] - this.$refs.navContainerRef.offsetHeight / 2,
+            top: this.navScrollTop[val] - this.$refs.navEls[val].offsetHeight,
             behavior: "smooth",
           });
         } else if (val < oldVal) {
           this.$refs.lefNavRef.scrollTo({
-            top: this.$refs.lefNavRef.scrollTop - (this.navScrollTop[oldVal] - this.navScrollTop[val] - this.$refs.navContainerRef.offsetHeight / 2),
+            top: this.$refs.navEls[val].offsetTop - this.$refs.navEls[val].offsetHeight,
             behavior: "smooth",
           });
         }
