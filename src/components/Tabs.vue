@@ -7,20 +7,11 @@
         :class="{ 'nav-item': true, active: activeIndex === index }"
         v-for="(value, key, index) in loftData"
         :key="key"
-      >
-        {{ value.title }}
-      </div>
+      >{{ value.title }}</div>
     </div>
     <div @scroll="handleScroll" ref="navContainerRef" class="right-container">
-      <div
-        class="content"
-        ref="contentEls"
-        v-for="(value, key) in loftData"
-        :key="key"
-      >
-        <div class="c-item" v-for="(item, index) in 100" :key="index">
-          {{ key }} + {{ index }}
-        </div>
+      <div class="content" ref="contentEls" v-for="(value, key) in loftData" :key="key">
+        <div class="c-item" v-for="(item, index) in 100" :key="index">{{ key }} + {{ index }}</div>
       </div>
     </div>
   </div>
@@ -34,8 +25,10 @@ export default {
       contentScrollTop: [],
       navScrollTop: [],
       activeIndex: 0,
+      isScroll: true,
+      timer: null,
       loftData: {
-        
+
       },
     };
   },
@@ -92,11 +85,23 @@ export default {
   methods: {
     handleClick(index) {
       let scrollTop = this.contentScrollTop[index];
+      this.activeIndex = index
+      this.isScroll = false
       this.$refs.navContainerRef.scrollTo({
         top: scrollTop,
+        behavior: "smooth"
       });
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+      setTimeout(() => {
+        this.isScroll = true
+      }, 1000)
     },
     handleScroll: throttle(function (e) {
+      if (!this.isScroll) {
+        return
+      }
       let scrollTop = e.target.scrollTop;
       for (let i = 0; i < this.contentScrollTop.length - 1; i++) {
         if (
